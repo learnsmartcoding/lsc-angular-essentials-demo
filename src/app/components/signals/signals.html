@@ -1,0 +1,169 @@
+<div class="container py-4">
+
+    <div class="card shadow border-0 mb-5">
+        <div class="card-header bg-primary text-white p-3 d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-cpu"></i> Angular Signals Demo</h3>
+            <span class="badge bg-light text-primary">LearnSmartCoding</span>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6">
+                    <h4 class="text-muted small text-uppercase fw-bold">Current Product</h4>
+                    <h2 class="display-6 fw-bold text-dark">{{ productName() }}</h2>
+                    <p class="text-secondary">Tracking fine-grained reactivity in real-time.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h4 class="text-muted small text-uppercase fw-bold">Total Cost (Computed)</h4>
+                    <h2 class="display-5 fw-bold text-success">{{ totalCost() | currency }}</h2>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold"><i class="bi bi-pencil-square"></i> Update Price
+                        (signal.set)</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" [value]="price()" (input)="updatePrice(t.value)" #t class="form-control"
+                            placeholder="Enter price" />
+                    </div>
+                    <small class="text-muted">Directly overwrites the value.</small>
+                </div>
+
+                <div class="col-md-4 text-center">
+                    <label class="form-label fw-bold"><i class="bi bi-plus-circle"></i> Quantity (signal.update)</label>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <button class="btn btn-outline-danger btn-lg rounded-circle" (click)="decrement()"
+                            [disabled]="quantity() <= 1">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <span class="fs-2 fw-bold w-25">{{ quantity() }}</span>
+                        <button class="btn btn-outline-success btn-lg rounded-circle" (click)="increment()">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Updates based on current value.</small>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-bold"><i class="bi bi-info-circle"></i> Logic Status</label>
+                    <div class="alert alert-info border-0 shadow-sm d-flex align-items-center">
+                        <div class="spinner-grow spinner-grow-sm text-info me-2" role="status"></div>
+                        <span>Effect is monitoring changes...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-dark text-success p-3">
+            <div class="d-flex justify-content-between align-items-center small mb-1">
+                <span class="font-monospace text-secondary">Terminal Output (effect triggered)</span>
+                <span class="badge bg-secondary">System Active</span>
+            </div>
+            <code class="text-info font-monospace">
+        > Log: Inventory updated. Current Quantity: {{ quantity() }} | Total: {{ totalCost() | currency }}
+      </code>
+        </div>
+    </div>
+
+    <div class="mt-5 pt-3">
+        <div class="d-flex align-items-center mb-4">
+            <div class="bg-primary text-white p-2 rounded me-3">
+                <i class="bi bi-journal-text fs-4"></i>
+            </div>
+            <h3 class="mb-0 fw-bold">Deep Dive: The Signals Trio</h3>
+        </div>
+
+        <div class="accordion shadow-sm" id="signalsReference">
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#refSignal">
+                        <span class="badge bg-primary me-2">1</span> <strong>Writable Signal</strong> &nbsp;<code
+                            class="text-primary small">signal(v)</code>
+                    </button>
+                </h2>
+                <div id="refSignal" class="accordion-collapse collapse" data-bs-parent="#signalsReference">
+                    <div class="accordion-body bg-light">
+                        <p>The foundation of reactivity. It holds a value and notifies Angular when that value changes.
+                        </p>
+                        <ul class="mb-3">
+                            <li><code>set()</code>: Completely replaces the value.</li>
+                            <li><code>update()</code>: Computes a new value based on the previous one.</li>
+                            <li><code>asReadonly()</code>: Protects the signal from being changed elsewhere.</li>
+                        </ul>
+                        <div class="bg-white border rounded p-3">
+                            <pre class="mb-0"><code>// Syntax
+count = signal(0); 
+this.count.set(10); 
+this.count.update(v => v + 1);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#refComputed">
+                        <span class="badge bg-success me-2">2</span> <strong>Computed Signal</strong> &nbsp;<code
+                            class="text-success small">computed(fn)</code>
+                    </button>
+                </h2>
+                <div id="refComputed" class="accordion-collapse collapse" data-bs-parent="#signalsReference">
+                    <div class="accordion-body bg-light">
+                        <p>Read-only signals that derive their value from other signals. They are
+                            <strong>efficient</strong> and <strong>lazy</strong>.
+                        </p>
+                        <ul class="mb-3">
+                            <li><strong>Lazy:</strong> It only calculates when someone actually reads it.</li>
+                            <li><strong>Memoized:</strong> It caches the result. If dependencies haven't changed, it
+                                returns the cached value.</li>
+                        </ul>
+                        <div class="bg-white border rounded p-3">
+                            <pre class="mb-0"><code>// Syntax
+total = computed(() => this.price() * this.qty());</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#refEffect">
+                        <span class="badge bg-warning text-dark me-2">3</span> <strong>Effect</strong> &nbsp;<code
+                            class="text-warning small">effect(fn)</code>
+                    </button>
+                </h2>
+                <div id="refEffect" class="accordion-collapse collapse" data-bs-parent="#signalsReference">
+                    <div class="accordion-body bg-light">
+                        <p>A side-effect operation that runs automatically whenever its dependent signals change.</p>
+                        <ul class="mb-3">
+                            <li><strong>Use cases:</strong> Logging, Analytics, syncing with LocalStorage.</li>
+                            <li><strong>Rules:</strong> Avoid setting other signals inside an effect (unless allowed).
+                            </li>
+                        </ul>
+                        <div class="bg-white border rounded p-3">
+                            <pre class="mb-0"><code>// Syntax
+effect(() => &#123;
+  localStorage.setItem('qty', this.qty());
+&#125;);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a routerLink="/" class="btn btn-link text-decoration-none">
+            <i class="bi bi-arrow-left"></i> Back to Main Catalog
+        </a>
+    </div>
+</div>
