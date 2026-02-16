@@ -1,0 +1,99 @@
+<div class="container py-4">
+    <div class="card shadow border-0 mb-5">
+        <div class="card-header bg-dark text-white p-3 d-flex justify-content-between">
+            <h3 class="mb-0"><i class="bi bi- code-slash"></i> Modern Control Flow</h3>
+            <button class="btn btn-sm btn-outline-light" (click)="toggleLoading()">Simulate API Load</button>
+        </div>
+
+        <div class="card-body p-4">
+            @if (isLoading()) {
+            <div class="text-center py-5" >
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2 text-muted">Fetching courses via &#64;if loading block...</p>
+            </div>
+            } @else {
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Course List</h4>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-danger" (click)="clearCourses()">Empty List</button>
+                    <button class="btn btn-sm btn-success" (click)="resetCourses()">Restore List</button>
+                </div>
+            </div>
+
+            <ul class="list-group">
+                @for (course of courses(); track course.id; let i = $index) {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ i + 1 }}. {{ course.title }}</span>
+
+                    @switch (course.status) {
+                    @case ('Published') { <span class="badge bg-success">Live</span> }
+                    @case ('Draft') { <span class="badge bg-warning text-dark">Draft</span> }
+                    @case ('Archived') { <span class="badge bg-secondary">Archived</span> }
+                    @default { <span class="badge bg-info">Unknown</span> }
+                    }
+                </li>
+                } @empty {
+                <li class="list-group-item list-group-item-warning text-center py-4">
+                    <i class="bi bi-exclamation-triangle"></i> No courses found. This is the <strong>&#64;empty</strong>
+                    block in action!
+                </li>
+                }
+            </ul>
+            }
+        </div>
+    </div>
+
+    <div class="mt-5 pt-3">
+        <div class="d-flex align-items-center mb-4">
+            <div class="bg-dark text-white p-2 rounded me-3">
+                <i class="bi bi-journal-code fs-4"></i>
+            </div>
+            <h3 class="mb-0 fw-bold">Reference: Control Flow Cheat Sheet</h3>
+        </div>
+
+        <div class="accordion shadow-sm" id="flowReference">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#refIf">
+                        <strong>1. The &#64;if Block</strong>
+                    </button>
+                </h2>
+                <div id="refIf" class="accordion-collapse collapse" data-bs-parent="#flowReference">
+                    <div class="accordion-body bg-light">
+                        <p>Replaces <code>*ngIf</code>. No more wrapping everything in an
+                            <code>&lt;ng-container&gt;</code>.</p>
+                        <div class="bg-white border rounded p-3">
+                            <pre class="mb-0"><code>&#64;if (condition) &#123;
+  &lt;p&gt;True!&lt;/p&gt;
+&#125; &#64;else &#123;
+  &lt;p&gt;False!&lt;/p&gt;
+&#125;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#refFor">
+                        <strong>2. The &#64;for Block &amp; &#64;empty</strong>
+                    </button>
+                </h2>
+                <div id="refFor" class="accordion-collapse collapse" data-bs-parent="#flowReference">
+                    <div class="accordion-body bg-light">
+                        <p>Replaces <code>*ngFor</code>. Requires a <code>track</code> property.</p>
+                        <div class="bg-white border rounded p-3">
+                            <pre class="mb-0"><code>&#64;for (item of items; track item.id) &#123;
+  &lt;li&gt;{{ '&#123;&#123;' }} item.name {{ '&#125;&#125;' }}&lt;/li&gt;
+&#125; &#64;empty &#123;
+  &lt;li&gt;List is empty!&lt;/li&gt;
+&#125;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

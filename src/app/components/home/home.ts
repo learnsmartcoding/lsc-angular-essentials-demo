@@ -28,19 +28,24 @@ tips: AngularTip[] = [
       description: 'Modern template syntax for better performance and readability.', 
       route: '/control-flow', 
       level: 'Beginner' 
-    },
-    { 
-      title: 'RxJS SwitchMap vs MergeMap', 
-      description: 'Visualizing how different flattening operators behave.', 
-      route: '/rxjs-operators', 
-      level: 'Intermediate' 
-    },
-    { 
+    },{ 
       title: 'Signal-Based Inputs', 
       description: 'Using the new input() API for reactive component data.', 
       route: '/inputs', 
       level: 'Advanced' 
-    }
+    },
+    { 
+      title: 'Signal-Based Queries', 
+      description: 'Master Angular Signal Queries: viewChild, viewChildren & contentChild', 
+      route: '/queries-demo', 
+      level: 'Advanced' 
+    },
+    { 
+      title: 'RxJS + Signals: The Perfect Duo in Angular!', 
+      description: 'how to use the RxJS-to-Signal bridge to convert your API streams into reactive signals with just one line of code.', 
+      route: '/rxjs-operators', 
+      level: 'Intermediate' 
+    }    
   ];
 
   // Logic for color-coding the badges

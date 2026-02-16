@@ -1,0 +1,91 @@
+<div class="container py-4">
+  <div class="card shadow border-0 mb-5">
+    <div class="card-header bg-gradient bg-primary text-white p-3">
+      <h3 class="mb-0"><i class="bi bi-search"></i> Signal Queries</h3>
+    </div>
+    
+    <div class="card-body p-4">
+      <div class="row align-items-center">
+        <div class="col-md-7">
+          <h4>DOM Element Access</h4>
+          <p class="text-muted">Using <code>viewChild.required</code> to grab a template reference reactively.</p>
+          
+          <div class="input-group mb-3">
+            <input #nameInput type="text" class="form-control form-control-lg" placeholder="Enter your name...">
+            <button class="btn btn-primary" (click)="focusInput()">
+              <i class="bi bi-cursor-fill"></i> Focus Me
+            </button>
+          </div>
+        </div>
+        
+        <div class="col-md-5">
+          <div class="alert alert-secondary border-0">
+            <h6 class="fw-bold"><i class="bi bi-lightning-auto"></i> Why this is better:</h6>
+            <ul class="small mb-0 ps-3">
+              <li>No more <code>undefined</code> errors.</li>
+              <li>Works inside <code>effect()</code>.</li>
+              <li>No Lifecycle hooks required.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer bg-dark text-info p-2 font-monospace small">
+      <div class="container">
+        > Signal Query Status: {{ inputElement() ? 'Element Linked ✅' : 'Searching... 🔍' }}
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5 pt-3">
+    <div class="d-flex align-items-center mb-4">
+      <div class="bg-primary text-white p-2 rounded me-3">
+        <i class="bi bi-code-square fs-4"></i>
+      </div>
+      <h3 class="mb-0 fw-bold">Deep Dive: Query Decorators vs. Functions</h3>
+    </div>
+
+    <div class="accordion shadow-sm" id="queryReference">
+      
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#refViewChild">
+            <strong>&#64;ViewChild vs. viewChild()</strong>
+          </button>
+        </h2>
+        <div id="refViewChild" class="accordion-collapse collapse" data-bs-parent="#queryReference">
+          <div class="accordion-body bg-light">
+            <p>The new <code>viewChild</code> function returns a signal that updates whenever the view changes.</p>
+            <div class="bg-white border rounded p-3">
+              <pre class="mb-0"><code>// Old Way (Decorator)
+&#64;ViewChild('el') el!: ElementRef;
+
+// New Way (Signal Query)
+el = viewChild&lt;ElementRef&gt;('el');
+// Or required
+el = viewChild.required&lt;ElementRef&gt;('el');</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#refContentChild">
+            <strong>Content Queries — contentChild()</strong>
+          </button>
+        </h2>
+        <div id="refContentChild" class="accordion-collapse collapse" data-bs-parent="#queryReference">
+          <div class="accordion-body bg-light">
+            <p>Use <code>contentChild</code> to access components or elements projected into your component via <code>&lt;ng-content&gt;</code>.</p>
+            <div class="bg-white border rounded p-3">
+              <pre class="mb-0"><code>header = contentChild&lt;ElementRef&gt;('headerText');</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
